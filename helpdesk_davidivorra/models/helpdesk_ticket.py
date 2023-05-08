@@ -56,4 +56,6 @@ class HelpdeskTicket(models.Model):
         ],
         default='new',
     )
-    #El campo Asignado hacer que sea solo de lectura
+    
+    def update_description(self):
+        self.write({'name': "Descripción Revisada y Actualizada"})
