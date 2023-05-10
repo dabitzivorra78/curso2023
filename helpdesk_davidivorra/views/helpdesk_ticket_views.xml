@@ -34,7 +34,18 @@
                             <field name="actions_todo"/>
                         </page>
                         <page string="Actions" name="actions">
-                            <field name="action_ids"/>
+                            <field name="action_ids">
+                                <tree string="Actions">
+                                    <field name="name"/>
+                                    <field name="state"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="name"/>
+                                        <field name="state"/>
+                                    </group>
+                                </form>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
