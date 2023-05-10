@@ -59,3 +59,14 @@ class HelpdeskTicket(models.Model):
     
     def update_description(self):
         self.write({'name': "Descripción Revisada y Actualizada"})
+
+    tag_ids = fields.Many2many(
+        comodel_name='helpdesk.ticket.tag',
+        #relation='helpdesk_ticket_tag_rel',
+        #column1='col_name',
+        #column2='other_col_name',
+        string='Tags')
+    action_ids = fields.One2many(
+        comodel_name='helpdesk.ticket.action',
+        inverse_name='ticket_id',
+        string='Actions')
