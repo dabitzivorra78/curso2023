@@ -18,3 +18,8 @@ class HelpdeskTicketAction(models.Model):
     ticket_id = fields.Many2one(
         comodel_name='helpdesk.ticket',
         string='ticket')
+
+    def set_done(self):       
+        self.write({'state': "done"})
+    def set_todo(self):       
+        self.write({'state': "todo"})
