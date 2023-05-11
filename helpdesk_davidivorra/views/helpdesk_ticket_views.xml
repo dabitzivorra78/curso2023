@@ -71,6 +71,22 @@
         </field>
     </record>
 
+    <record id="view_helpdesk_ticket_search" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <search string="Tickets">
+                <field name="name" />
+                <field name="user_id" />
+                <filter string="Assigned" name="filter_to_assigned" domain="[('assigned','=',True)]"/>
+                <filter string="No date" name="filter_no_date" domain="[('date','=',False)]"/>
+                <filter string="Date" name="date" context="{'group_by':'date'}"/>
+                <filter string="User" name="user" context="{'group_by':'user_id'}"/>
+                 
+            </search>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_action" model="ir.actions.act_window">
         <field name="name">Helpdesk Tickets</field>
         <field name="type">ir.actions.act_window</field>
