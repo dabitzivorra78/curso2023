@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError 
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
@@ -77,3 +78,32 @@ class HelpdeskTicket(models.Model):
 
     amount_time = fields.Float(
         string="Amount of time")
+
+        #Hacer que el campo assigned sea calculado, hacer que se pueda buscar con el atributo search y 
+        #hacer que se pueda modificar de forma que si lo marco se actualice el usuario con el usuario conectado y 
+        #si lo desmarco se limpie el campo del usuario.
+    assigned = fields.Boolean(
+        compute='_compute_assigned',
+        search='_search_assigned',
+        inverse='_inverse_assigned',
+    )
+    @api.depends('user_id')
+    def _compute_assigned(self):
+        for record in self:
+            record.assigned = bool(record.user_id )
+
+    def _search_assigned(self, operator, value):
+        if operator not in ('=', '!=') or not isinstance(value, bool):
+            raise UserError( ("Operation not supported"))
+        if operator == '=' and value == True:
+            operator = '!='
+        else:
+            operator = '='
+        return [('user_id', operator, False)]
+
+    def _inverse_assigned(self):
+        for record in self:
+            if not record.assigned:
+                record.user_id = False
+            else:
+                record.user_id = self.env.user
