@@ -19,6 +19,7 @@
                         <group>
                             <field name="date"/>
                             <field name="date_limit"/>
+                            <field name="amount_time" widget="float_time"/>
                         </group>
                         <group>
                             <field name="user_id"/>
@@ -118,7 +119,23 @@
                 </templates>
             </kanban>
         </field>
-    </record>    
+    </record>
+    <!--Añadir vista pivot
+        añadir vista pivot a la acción.
+        mostrar tiempo dedicado por usuario/mes -->
+
+<record id="view_helpdesk_ticket_pivot" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket.pivot</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <pivot string="Tickets">
+                <field name="user_id" type="row" />
+                <field name="date" interval="month" type="col" />
+                <field name="amount_time" type="measure" widget="float_time"/>
+            </pivot>
+        </field>
+    </record>
+
     <!--vista search -->
     <record id="view_helpdesk_ticket_search" model="ir.ui.view">
         <field name="name">view.helpdesk_ticket.search</field>
@@ -140,7 +157,7 @@
         <field name="name">Helpdesk Tickets</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,pivot,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new ticket

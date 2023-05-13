@@ -74,3 +74,6 @@ class HelpdeskTicket(models.Model):
         self.action_ids.set_done()
 
     color = fields.Integer('Color Index', default=0)
+
+    amount_time = fields.Float(
+        string="Amount of time")
