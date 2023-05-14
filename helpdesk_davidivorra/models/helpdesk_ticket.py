@@ -60,9 +60,9 @@ class HelpdeskTicket(models.Model):
 
     tag_ids = fields.Many2many(
         comodel_name='helpdesk.ticket.tag',
-        #relation='helpdesk_ticket_tag_rel',
-        #column1='col_name',
-        #column2='other_col_name',
+        relation='helpdesk_ticket_tag_rel',
+        column1='ticket_id',
+        column2='tag_id',
         string='Tags')
     action_ids = fields.One2many(
         comodel_name='helpdesk.ticket.action',
@@ -75,6 +75,10 @@ class HelpdeskTicket(models.Model):
 
     color = fields.Integer('Color Index', default=0)
 
+    person_id = fields.Many2one(
+        comodel_name='res.partner',
+        domain=[('is_company', '=', False)],
+    )
     amount_time = fields.Float(
         string="Amount of time")
 
@@ -133,6 +137,8 @@ class HelpdeskTicket(models.Model):
         #self.write({'tag_ids' : [
         #    (5,0,0),
         #    (6,0,tag_ids.ids)]})  
+
+        import pdb; pdb.set_trace()
         self.tag_ids = [
             Command.clear(),
             Command.set(tag_ids.ids)]

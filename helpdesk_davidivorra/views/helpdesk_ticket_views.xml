@@ -25,7 +25,9 @@
                             <field name="assigned"/>
                             <field name="user_id"/>
                             <field name="tickets_count"/>
-                            <field name="tag_name"/>
+                           <!--- Restringe opcion de crear automaticamente (sin querer al dar intro). No open (no permite acceder a la ficha) --> 
+                            <field name="person_id" options="{'no_quick_create': True, 'no_open': True}" />
+                            <field name="tag_name"/> 
                             <button string="Crear"
                                 name="create_tag"
                                 type="object" />
@@ -45,8 +47,14 @@
                         </page>
                         <page string="Actions" name="actions">
                             <button string="Set all as done" name="set_actions_as_done" type="object"/>
-                            <field name="action_ids">
-                                <tree string="Actions">
+
+<!--- En el ticket tenemos un campo action_ids, y no tenemos definida una vista para el modelo al que apunta, crear una vista embevida, y vamos a ocultar el m2o en el formulario que aputna al o2m en el inverse_name.
+- Las etiquetas tienen unas vistas que muestran el m2m a los tickets, hacer otra vista sin este m2m y hacer que desde el 
+ticket se muestre la segunda vista.
+- Hacer que el tag_ids no pueda crear nuevos tag_ids -->
+                            <field name="action_ids" context="{'default_state': 'done', 'tree_view_ref':'helpdesk_davidivorra.view_helpdesk_ticket_action_tree_simple', 'form_view_ref':'helpdesk_davidivorra.view_helpdesk_ticket_action_form_simple'}"/>
+                            <!-- <field name="action_ids">
+                                <tree string="Actions" editable="bottom">
                                     <field name="name"/>
                                     <field name="state"/>
                                 </tree>
@@ -57,8 +65,7 @@
                                         <field name="name"/>
                                         <field name="state" readonly="1"/>
                                     </group>
-                                </form>
-                            </field>
+                                </form> -->
                         </page>
                     </notebook>
                 </sheet>

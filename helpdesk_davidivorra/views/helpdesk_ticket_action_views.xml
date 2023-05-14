@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_helpdesk_ticket_action_form" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket_action.form</field>
+        <field name="model">helpdesk.ticket.action</field>
+        <field eval="10" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Action">
+                <sheet>
+                    <group name="main">
+                        <field name="name"/>
+                        <field name="state"/>
+                        <field name="ticket_id"/>
+                    </group>
+                </sheet>                    
+            </form>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_action_form_simple" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket_action.form.simple</field>
+        <field name="model">helpdesk.ticket.action</field>
+        <field eval="100" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Action">
+                    <group name="main">
+                        <field name="name"/>
+                        <field name="state"/>
+                    </group>                 
+            </form>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_action_tree" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket_action.tree</field>
+        <field name="model">helpdesk.ticket.action</field>
+        <field eval="10" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Action">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="ticket_id"/>
+            </tree>
+        </field>
+    </record>
+
+        <record id="view_helpdesk_ticket_action_tree_simple" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket_action.tree.simple</field>
+        <field name="model">helpdesk.ticket.action</field>
+        <field eval="100" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="Action">
+                <field name="name"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="view_helpdesk_ticket_action_search" model="ir.ui.view">
+        <field name="name">view.helpdesk_ticket_action.search</field>
+        <field name="model">helpdesk.ticket.action</field>
+        <field name="arch" type="xml">
+            <search string="Action">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="ticket_id"/>
+                <group string="Group By" name="groupby">
+                    <filter name="state_groupby" string="State"
+                        context="{'group_by': 'state'}" />
+                    <filter name="ticket_groupby" string="Ticket"
+                        context="{'group_by': 'ticket_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_action_action" model="ir.actions.act_window">
+        <field name="name">Action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">helpdesk.ticket.action</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Action
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="helpdesk_ticket_action_menu" parent="helpdesk_menu" 
+        action="helpdesk_ticket_action_action" sequence="20"/>
+</odoo>   
