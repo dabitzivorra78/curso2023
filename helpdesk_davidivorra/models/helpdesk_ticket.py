@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, Command,fields, models
 from odoo.exceptions import UserError 
 
 class HelpdeskTicket(models.Model):
@@ -69,7 +69,6 @@ class HelpdeskTicket(models.Model):
         inverse_name='ticket_id',
         string='Actions')
 
-
     def set_actions_as_done(self):
         self.ensure_one()
         self.action_ids.set_done()
@@ -107,3 +106,34 @@ class HelpdeskTicket(models.Model):
                 record.user_id = False
             else:
                 record.user_id = self.env.user
+
+    #hacer un campo calculado que indique, dentro de un tiquet, la cantidad de tiquets asociados al mismo usuario.
+    tickets_count = fields.Integer(
+        compute='_compute_tickets_count',
+        string='Tickets count',
+    )
+    @api.depends('user_id')
+    def _compute_tickets_count(self):
+        ticket_obj = self.env['helpdesk.ticket']
+        for record in self:
+            tickets = ticket_obj.search([('user_id', '=', record.user_id.id)])
+            record.tickets_count = len(tickets)
+    #crear un campo nombre de etiqueta, y hacer un botón que cree la nueva etiqueta con ese nombre y lo asocie al ticket.
+    tag_name = fields.Char()
+    
+    def create_tag(self):
+        self.ensure_one()
+        #self.write({'tag_ids' : [(0,0,{'name': self.tag_name})]})     
+        #self.write({'tag_ids' : [Command.create({'name': self.tag_name})]})
+        self.tag_ids = [Command.create({'name': self.tag_name})]
+    def clear_tags(self):
+        self.ensure_one()
+        tag_ids = self.env['helpdesk.ticket.tag'].search([('name', '=', 'otra')])
+        
+        #self.write({'tag_ids' : [
+        #    (5,0,0),
+        #    (6,0,tag_ids.ids)]})  
+        self.tag_ids = [
+            Command.clear(),
+            Command.set(tag_ids.ids)]
+
