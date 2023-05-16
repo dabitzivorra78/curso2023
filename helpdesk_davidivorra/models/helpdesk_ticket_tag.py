@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 class HelpdeskTicketTag(models.Model):
     _name = 'helpdesk.ticket.tag'
@@ -14,3 +14,8 @@ class HelpdeskTicketTag(models.Model):
         column1='tag_id',
         column2='ticket_id',
         string='Tickets')
+    
+    @api.model
+    def _clean_tags(self):
+        self.search([('ticket_ids', '=', False)]).unlink()
+

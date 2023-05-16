@@ -6,7 +6,12 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <form>
-                <header>
+                <header> 
+                    <button string="Assign to me"
+                    name="get_assigned"
+                    type="object"
+                    states='new'
+                    groups='helpdesk_davidivorra.res_groups_helpdesk_manager'/>
                     <field name="state" widget="statusbar" statusbar_visible="new,assigned,in_process,pending,resolved"/>
                 </header>
                 <sheet>
@@ -47,6 +52,8 @@
                         </page>
                         <page string="Actions" name="actions">
                             <button string="Set all as done" name="set_actions_as_done" type="object"/>
+                            <button string="Open related actions (type=action)" name="%(helpdesk_davidivorra.helpdesk_ticket_action_related_action)d" type="action"/>
+                            <button string="Open related actions (type=object)" name="get_related_actions" type="object"/>
 
 <!--- En el ticket tenemos un campo action_ids, y no tenemos definida una vista para el modelo al que apunta, crear una vista embevida, y vamos a ocultar el m2o en el formulario que aputna al o2m en el inverse_name.
 - Las etiquetas tienen unas vistas que muestran el m2m a los tickets, hacer otra vista sin este m2m y hacer que desde el 
@@ -210,6 +217,7 @@ ticket se muestre la segunda vista.
             </p>
         </field>
     </record>
+    
     <menuitem id="helpdesk_menu" name="Helpdesk" sequence="10"/>
     <menuitem id="helpdesk_ticket_open" name="Tickets" sequence="10" parent="helpdesk_menu" action="helpdesk_ticket_action"/>
 
